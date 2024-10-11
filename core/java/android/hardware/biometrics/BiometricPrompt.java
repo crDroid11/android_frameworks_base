@@ -113,6 +113,10 @@ public class BiometricPrompt implements BiometricAuthenticator, BiometricConstan
      */
     public static final String KEY_AUTHENTICATORS_ALLOWED = "authenticators_allowed";
     /**
+     * @hide
+     */
+    public static final String KEY_CLASS_CONFIRM_DEVICE_CRED = "createConfirmDeviceCredentialIntent";
+    /**
      * If this is set, check the Device Policy Manager for allowed biometrics.
      * @hide
      */
@@ -430,6 +434,20 @@ public class BiometricPrompt implements BiometricAuthenticator, BiometricConstan
         @NonNull
         public Builder setReceiveSystemEvents(boolean set) {
             mBundle.putBoolean(KEY_RECEIVE_SYSTEM_EVENTS, set);
+            return this;
+        }
+
+        /**
+         * Set the class name of ConfirmDeviceCredentialActivity.
+         *
+         * @return This builder.
+         * @hide
+         */
+        @NonNull
+        @RequiresPermission(USE_BIOMETRIC_INTERNAL)
+        public Builder setClassNameIfItIsConfirmDeviceCredentialActivity() {
+            mBundle.putCharSequence(KEY_CLASS_CONFIRM_DEVICE_CRED,
+                        mContext.getClass().getName());
             return this;
         }
 
