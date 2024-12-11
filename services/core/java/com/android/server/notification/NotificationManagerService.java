@@ -2083,6 +2083,7 @@ public class NotificationManagerService extends SystemService {
                 mZenModeHelper,
                 new NotificationChannelLoggerImpl(),
                 mAppOps,
+                mUgmInternal,
                 new SysUiStatsEvent.BuilderFactory());
         mRankingHelper = new RankingHelper(getContext(),
                 mRankingHandler,
@@ -5252,7 +5253,8 @@ public class NotificationManagerService extends SystemService {
             final Uri soundUri = updateChannel.getSound();
             final Uri originalSoundUri =
                     (originalChannel != null) ? originalChannel.getSound() : null;
-            if (soundUri != null && !Objects.equals(originalSoundUri, soundUri)) {
+            if (soundUri != null && !Objects.equals(originalSoundUri, soundUri) &&
+                ContentResolver.SCHEME_CONTENT.equals(soundUri.getScheme())) {
                 Binder.withCleanCallingIdentity(() -> {
                     mUgmInternal.checkGrantUriPermission(sourceUid, null,
                             ContentProvider.getUriWithoutUserId(soundUri),
