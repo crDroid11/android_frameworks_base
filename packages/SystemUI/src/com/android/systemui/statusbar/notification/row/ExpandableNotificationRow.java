@@ -2521,14 +2521,18 @@ public class ExpandableNotificationRow extends ActivatableNotificationView
         boolean oldShowingPublic = mShowingPublic;
         mShowingPublic = (mSensitive && hideSensitive)
                 || (mEntry != null && mEntry.secureContent());
-        if (mShowingPublicInitialized && mShowingPublic == oldShowingPublic) {
+        boolean isShowingLayoutNotChanged = mShowingPublic == oldShowingPublic;
+        if (mShowingPublicInitialized && isShowingLayoutNotChanged) {
             return;
         }
 
         // bail out if no public version
         if (mPublicLayout.getChildCount() == 0) return;
 
-        if (!animated) {
+        final boolean shouldSkipHideSensitiveAnimation =
+                mShowingPublic && isShowingLayoutNotChanged;
+
+        if (!animated || shouldSkipHideSensitiveAnimation) {
             mPublicLayout.animate().cancel();
             mPrivateLayout.animate().cancel();
             if (mChildrenContainer != null) {
